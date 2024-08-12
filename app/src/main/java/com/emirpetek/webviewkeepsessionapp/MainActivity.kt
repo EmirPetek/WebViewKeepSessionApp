@@ -2,13 +2,11 @@ package com.emirpetek.webviewkeepsessionapp
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
+import android.webkit.WebView
 import android.webkit.WebViewClient
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.emirpetek.webviewkeepsessionapp.databinding.ActivityMainBinding
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -23,13 +21,29 @@ class MainActivity : AppCompatActivity() {
         binding.webview.webViewClient = WebViewClient()
 
         // this will load the url of the website
-        binding.webview.loadUrl("https://www.unisportclub.com.tr/home")
+        binding.webview.loadUrl(getString(R.string.base_url))
 
         // this will enable the javascript settings, it can also allow xss vulnerabilities
         binding.webview.settings.javaScriptEnabled = true
 
         // if you want to enable zoom feature
         binding.webview.settings.setSupportZoom(true)
+
+
+        // WebViewClient'i ayarla
+        binding.webview.webViewClient = object : WebViewClient() {
+
+            // Sayfa yüklenmesi tamamlandığında bu metod çağrılır
+            override fun onPageFinished(view: WebView, url: String) {
+                super.onPageFinished(view, url)
+
+                // URL'yi kontrol et
+                if (url.contains("https://unisportclub.com.tr/login")) {
+                    // Belirli bir URL içeren sayfalar için Logcat'e mesaj yazdır
+                    Log.e("WebView", "URL contains https://unisportclub.com.tr/login: $url")
+                }
+            }
+        }
 
         setContentView(binding.root)
     }
@@ -46,4 +60,6 @@ class MainActivity : AppCompatActivity() {
         else
             super.onBackPressed()
     }
+
+
 }

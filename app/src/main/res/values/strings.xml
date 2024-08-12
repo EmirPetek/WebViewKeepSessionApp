@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">WebViewKeepSessionApp</string>
+    <string name="base_url">"https://www.unisportclub.com.tr/home"</string>
 </resources>
